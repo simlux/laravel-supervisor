@@ -1,0 +1,13 @@
+{
+    "name": "simlux/laravel-supervisor",
+    "description": "Supervisor XML-RPC usage for Laravel",
+    "type": "package",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Simon Kleeschulte",
+            "email": "simlux78@gmail.com"
+        }
+    ],
+    "require": {}
+}
