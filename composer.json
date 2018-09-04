@@ -20,7 +20,14 @@
     },
     "autoload": {
         "psr-4": {
-            "Simlux\\Supervisor\\": "src/"
+            "Simlux\\LaravelSupervisor\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Simlux\\LaravelSupervisor\\SupervisorServiceProvider"
+            ]
         }
     }
 }
