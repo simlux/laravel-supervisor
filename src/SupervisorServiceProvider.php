@@ -15,13 +15,15 @@ class SupervisorServiceProvider extends ServiceProvider
     /**
      * @var bool
      */
-    protected $defer = true;
+    protected $defer = false;
 
     public function boot()
     {
-        $this->commands([
-            InfoCommand::class,
-        ]);
+        if ($this->app->runningInConsole()) {
+            $this->commands([
+                InfoCommand::class,
+            ]);
+        }
     }
 
     public function register()
