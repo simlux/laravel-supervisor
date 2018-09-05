@@ -26,9 +26,13 @@ class InfoCommand extends AbstractSupervisorCommand
     {
         $this->handleOptions();
 
-        $this->info('Supervisor Version: ' . $this->getApi()->getSupervisorVersion());
-        $this->info('API Version:        ' . $this->getApi()->getApiVersion());
-        $this->info('Identification:     ' . $this->getApi()->getIdentification());
-        $this->info('State:              ' . $this->getApi()->getState()['statename']);
+        try {
+            $this->info('Supervisor Version: ' . $this->getApi()->getSupervisorVersion());
+            $this->info('API Version:        ' . $this->getApi()->getApiVersion());
+            $this->info('Identification:     ' . $this->getApi()->getIdentification());
+            $this->info('State:              ' . $this->getApi()->getState()['statename']);
+        } catch (\Exception $e) {
+            $this->error($e->getMessage());
+        }
     }
 }
