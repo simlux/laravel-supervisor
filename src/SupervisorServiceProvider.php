@@ -3,6 +3,7 @@
 namespace Simlux\LaravelSupervisor;
 
 use Illuminate\Support\ServiceProvider;
+use Simlux\LaravelSupervisor\Console\Commands\InfoCommand;
 
 /**
  * Class SupervisorServiceProvider
@@ -23,7 +24,9 @@ class SupervisorServiceProvider extends ServiceProvider
 
     public function register()
     {
-        
+        $this->commands([
+            InfoCommand::class,
+        ]);
     }
 
 }
