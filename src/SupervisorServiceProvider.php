@@ -19,14 +19,14 @@ class SupervisorServiceProvider extends ServiceProvider
 
     public function boot()
     {
-
+        $this->commands([
+            InfoCommand::class,
+        ]);
     }
 
     public function register()
     {
-        $this->commands([
-            InfoCommand::class,
-        ]);
+
     }
 
 }
