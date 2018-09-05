@@ -15,7 +15,7 @@
     "require":     {
         "php": ">=7.1.0",
         "lstrojny/fxmlrpc": "^0.14.0",
-        "laravel/framework": "5.*",
+        "laravel/framework": "5.6.*",
         "ihor/supervisor-xml-rpc": "^0.1.1"
     },
     "autoload": {
