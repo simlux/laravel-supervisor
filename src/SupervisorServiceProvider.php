@@ -1,4 +1,4 @@
-<?php declare(strict_mode=1);
+<?php declare(strict_types=1);
 
 namespace Simlux\LaravelSupervisor;
 
