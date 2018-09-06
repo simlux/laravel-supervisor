@@ -1,6 +1,7 @@
 <?php declare(strict_types=1);
 
 namespace Simlux\LaravelSupervisor\Console\Commands;
+use Supervisor\ApiException;
 
 /**
  * Class StatusCommand
@@ -26,18 +27,21 @@ class StatusCommand extends AbstractSupervisorCommand
     {
         $this->handleOptions();
 
-        $data = collect($this->getApi()->getAllProcessInfo())->map(function (array $process) {
-            return [
-                $process['pid'],
-                $process['group'],
-                $process['name'],
-                strtolower($process['statename']),
-                $this->diffForHumans($process['start']),
-                $process['logfile'],
-            ];
-        });
-
-        $this->table(['PID', 'GROUP', 'NAME', 'STATE', 'UPTIME', 'LOG FILE'], $data);
+        try {
+            $data = collect($this->getApi()->getAllProcessInfo())->map(function (array $process) {
+                return [
+                    $process['pid'],
+                    $process['group'],
+                    $process['name'],
+                    strtolower($process['statename']),
+                    $this->diffForHumans($process['start']),
+                    $process['logfile'],
+                ];
+            });
+           $this->table(['PID', 'GROUP', 'NAME', 'STATE', 'UPTIME', 'LOG FILE'], $data);
+        } catch (ApiException $e) {
+            $this->error($e->getMessage());
+        }
     }
 
 
