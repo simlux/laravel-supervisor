@@ -4,6 +4,7 @@ namespace Simlux\LaravelSupervisor\Console\Commands;
 
 use Illuminate\Console\Command;
 use Supervisor\Api;
+use Carbon\Carbon;
 
 /**
  * Class AbstractSupervisorCommand
@@ -78,6 +79,60 @@ abstract class AbstractSupervisorCommand extends Command
         if ($this->option(self::OPTION_PASSWORD)) {
             $this->password = $this->option(self::OPTION_PASSWORD);
         }
+    }
+
+    /**
+     * @param string|int|\DateTime $dateTime
+     * @param null                 $now
+     *
+     * @return string
+     *
+     * @TODO: REFAC -> move it to datetime helper
+     */
+    protected function diffForHumans($dateTime, $now = null)
+    {
+        if (is_string($dateTime)) {
+            $dateTime = Carbon::parse($dateTime);
+        } else if (is_int($dateTime)) {
+            $dateTime = Carbon::createFromTimestamp($dateTime);
+        } else if ($dateTime instanceof \DateTime) {
+            $dateTime = Carbon::parse($dateTime->format('Y-m-d H:i:s'));
+        }
+
+        if (is_null($now)) {
+            $now = Carbon::now();
+        }
+
+        $seconds = $dateTime->diffInSeconds($now);
+
+        $minutes = floor($seconds / 60);
+        $seconds -= $minutes * 60;
+
+        $hours   = floor($minutes / 60);
+        $minutes -= $hours * 60;
+
+        $days  = floor($hours / 24);
+        $hours -= $days * 24;
+
+        $parts = [];
+
+        if ($days > 0) {
+            $parts[] = $days . 'd';
+        }
+
+        if ($hours > 0) {
+            $parts[] = $hours . 'h';
+        }
+
+        if ($minutes > 0) {
+            $parts[] = $minutes . 'm';
+        }
+
+        if ($seconds > 0) {
+            $parts[] = $seconds . 's';
+        }
+
+        return implode(' ', $parts);
     }
 
     abstract public function handle(): void;
