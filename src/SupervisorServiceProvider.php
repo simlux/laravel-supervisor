@@ -5,6 +5,7 @@ namespace Simlux\LaravelSupervisor;
 use Illuminate\Support\ServiceProvider;
 use Simlux\LaravelSupervisor\Console\Commands\InfoCommand;
 use Simlux\LaravelSupervisor\Console\Commands\StatusCommand;
+use Simlux\LaravelSupervisor\Console\Commands\StopCommand;
 
 /**
  * Class SupervisorServiceProvider
@@ -24,6 +25,7 @@ class SupervisorServiceProvider extends ServiceProvider
             $this->commands([
                 InfoCommand::class,
                 StatusCommand::class,
+                StopCommand::class,
             ]);
         }
     }

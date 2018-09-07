@@ -3,8 +3,10 @@
 namespace Simlux\LaravelSupervisor\Console\Commands;
 
 use Illuminate\Console\Command;
+use Illuminate\Support\Collection;
 use Supervisor\Api;
 use Carbon\Carbon;
+use Supervisor\ApiException;
 
 /**
  * Class AbstractSupervisorCommand
@@ -79,6 +81,45 @@ abstract class AbstractSupervisorCommand extends Command
         if ($this->option(self::OPTION_PASSWORD)) {
             $this->password = $this->option(self::OPTION_PASSWORD);
         }
+    }
+
+    /**
+     * @return Collection
+     */
+    protected function getProcessList(): Collection
+    {
+        try {
+            return collect($this->getApi()->getAllProcessInfo())->map(function (array $process) {
+                return [
+                    'pid'       => $process['pid'],
+                    'group'     => $process['group'],
+                    'name'      => $process['name'],
+                    'statename' => strtolower($process['statename']),
+                    'start'     => $process['start'],
+                ];
+            });
+        } catch (ApiException $e) {
+            $this->error($e->getMessage());
+
+            return collect([]);
+        }
+    }
+
+    /**
+     * @param string $processName
+     * @param bool   $processNameIncluded
+     *
+     * @return string
+     */
+    protected function getGroupName(string $processName, bool $processNameIncluded = false): string
+    {
+        $process = $this->getProcessList()->filter(function ($process) use ($processName) {
+            return $process['name'] === $processName;
+        })->first();
+
+        $group = $process['group'] ?? '';
+
+        return ($processNameIncluded) ? sprintf('%s:%s', $group, $processName) : $group;
     }
 
     /**

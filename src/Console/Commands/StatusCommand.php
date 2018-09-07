@@ -11,13 +11,10 @@ use Supervisor\ApiException;
  */
 class StatusCommand extends AbstractSupervisorCommand
 {
-    const OPTION_NAME = 'name';
-
     /**
      * @var string
      */
-    protected $signature = 'supervisor:status {--name=}
-                                              {--host=} 
+    protected $signature = 'supervisor:status {--host=} 
                                               {--port=}
                                               {--user=}
                                               {--password=}';
@@ -31,29 +28,8 @@ class StatusCommand extends AbstractSupervisorCommand
     {
         $this->handleOptions();
 
-        if ($this->option(self::OPTION_NAME)) {
-            try {
-
-                dd($this->getApi()->getProcessInfo($this->option(self::OPTION_NAME)));
-
-                $data = collect($this->getApi()->getAllProcessInfo())->map(function (array $process) {
-                    return [
-                        $process['pid'],
-                        $process['group'],
-                        $process['name'],
-                        strtolower($process['statename']),
-                        $this->diffForHumans($process['start']),
-                        $process['logfile'],
-                    ];
-                });
-                $this->table(['PID', 'GROUP', 'NAME', 'STATE', 'UPTIME', 'LOG FILE'], $data);
-            } catch (ApiException $e) {
-                $this->error($e->getMessage());
-            }
-        }
-
         try {
-            $data = collect($this->getApi()->getAllProcessInfo())->map(function (array $process) {
+            $data = $this->getProcessList()->map(function($process) {
                 return [
                     $process['pid'],
                     $process['group'],
@@ -62,12 +38,10 @@ class StatusCommand extends AbstractSupervisorCommand
                     $this->diffForHumans($process['start']),
                     $process['logfile'],
                 ];
-            });
-           $this->table(['PID', 'GROUP', 'NAME', 'STATE', 'UPTIME', 'LOG FILE'], $data);
+            })->toArray();
+            $this->table(['PID', 'GROUP', 'NAME', 'STATE', 'UPTIME', 'LOG FILE'], $data);
         } catch (ApiException $e) {
             $this->error($e->getMessage());
         }
     }
-
-
 }
