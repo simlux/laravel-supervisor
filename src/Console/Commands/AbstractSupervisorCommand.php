@@ -96,6 +96,7 @@ abstract class AbstractSupervisorCommand extends Command
                     'name'      => $process['name'],
                     'statename' => strtolower($process['statename']),
                     'start'     => $process['start'],
+                    'logfile'   => $process['logfile'],
                 ];
             });
         } catch (ApiException $e) {
