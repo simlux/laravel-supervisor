@@ -16,11 +16,11 @@ class StopGroupCommand extends AbstractSupervisorCommand
     /**
      * @var string
      */
-    protected $signature = 'supervisor:stop {group} 
-                                            {--host=}
-                                            {--port=}
-                                            {--user=}
-                                            {--password=}';
+    protected $signature = 'supervisor:stop:group {group} 
+                                                  {--host=}
+                                                  {--port=}
+                                                  {--user=}
+                                                  {--password=}';
 
     /**
      * @var string

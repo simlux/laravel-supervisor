@@ -23,10 +23,7 @@ abstract class AbstractSupervisorCommand extends Command
     /**
      * @var string
      */
-    protected $signature = 'supervisor {--host=} 
-                                       {--port=}
-                                       {--user=}
-                                       {--password=}';
+    protected $signature = '';
     /**
      * @var string
      */

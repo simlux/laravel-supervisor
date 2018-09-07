@@ -16,11 +16,11 @@ class StopProcessCommand extends AbstractSupervisorCommand
     /**
      * @var string
      */
-    protected $signature = 'supervisor:stop {process} 
-                                            {--host=}
-                                            {--port=}
-                                            {--user=}
-                                            {--password=}';
+    protected $signature = 'supervisor:stop:process {process} 
+                                                    {--host=}
+                                                    {--port=}
+                                                    {--user=}
+                                                    {--password=}';
 
     /**
      * @var string
