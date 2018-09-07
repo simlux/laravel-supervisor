@@ -9,14 +9,14 @@ use Supervisor\ApiException;
  *
  * @package InspectYourWeb\Console\Commands\Supervisor
  */
-class StopCommand extends AbstractSupervisorCommand
+class StopProcessCommand extends AbstractSupervisorCommand
 {
-    const OPTION_PROCESS = 'process';
+    const ARGUMENT_PROCESS = 'process';
 
     /**
      * @var string
      */
-    protected $signature = 'supervisor:stop {--process=} 
+    protected $signature = 'supervisor:stop {process} 
                                             {--host=}
                                             {--port=}
                                             {--user=}
@@ -27,11 +27,14 @@ class StopCommand extends AbstractSupervisorCommand
      */
     protected $description = 'Stops s supervisor process.';
 
+    /**
+     * @return void
+     */
     public function handle(): void
     {
         $this->handleOptions();
 
-        $group = $this->getGroupName($this->option(self::OPTION_PROCESS), true);
+        $group = $this->getGroupName($this->argument(self::ARGUMENT_PROCESS), true);
         try {
             $this->info(sprintf('Stopping %s', $group));
             $this->getApi()->stopProcess($group);
